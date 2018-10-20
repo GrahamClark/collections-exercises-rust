@@ -22,21 +22,19 @@ pub fn staff_to_dept(command: &str, h: HashMap<String, Vec<String>>) -> HashMap<
 }
 
 enum Command {
-    Add
+    Add,
+    Remove
 }
 
 fn apply_command(params: (Command, String, String), h: HashMap<String, Vec<String>>) -> HashMap<String, Vec<String>> {
     let (command, name, dept) = params;
     match command {
-        Command::Add => add_employee(h, name, dept)
+        Command::Add => add_employee(h, name, dept),
+        Command::Remove => h
     }
 }
 
 fn add_employee(mut h: HashMap<String, Vec<String>>, name: String, dept: String) -> HashMap<String, Vec<String>> {
-    // match h.entry(dept) {
-    //     Entry::Vacant(e) => { e.insert(vec![name]); },
-    //     Entry::Occupied(mut e) => { e.get_mut().push(name); }
-    // }
     h.entry(dept).or_insert(Vec::new()).push(name);
     h
 }
@@ -56,6 +54,7 @@ fn parse_command(command: &str) -> Option<(Command, String, String)> {
 fn str_to_command(command: &str) -> Option<Command> {
     match command {
         "Add" => Some(Command::Add),
+        "Remove" => Some(Command::Remove),
         _ => None
     }
 }
